@@ -9,6 +9,7 @@ Makefile
 docs/
 node_modules/
 ui/node_modules/
+ui/build/
 ui/.vite/
 *.tar
 .env
