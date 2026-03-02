@@ -1,0 +1,17 @@
+.git
+.github
+.claude
+.vscode
+*.md
+!metadata.json
+LICENSE
+Makefile
+docs/
+node_modules/
+ui/node_modules/
+ui/.vite/
+*.tar
+.env
+.env.*
+.DS_Store
+Thumbs.db
