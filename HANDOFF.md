@@ -6,63 +6,59 @@ DockPulse is a Docker Desktop extension that checks if your running container im
 
 **Owner**: Herb Hall (github.com/HerbHall)
 **License**: MIT
-**Status**: Pre-development — scaffold only, no code yet
+**Status**: Phase 1 MVP complete — backend, frontend, CI, Dockerfile all working
 **Build Order**: Second project (after RunNotes, before PacketDeck)
 
 ---
 
-## What Already Exists (D:\devspace\DockPulse)
+## What Already Exists (D:\DevSpace\DockPulse)
 
-- ✅ `CLAUDE.md` — Project context for Claude Code
-- ✅ `HANDOFF.md` — This file
-- ✅ `README.md` — Project overview
-- ✅ `CONTRIBUTING.md` — Contribution guidelines
-- ✅ `CHANGELOG.md` — Keep-a-Changelog format
-- ✅ `LICENSE` — MIT
-- ✅ `VERSION` — 0.1.0
-- ✅ `.gitignore` — Comprehensive
-- ✅ `.editorconfig` — Workspace standard
-- ✅ `metadata.json` — Docker extension metadata
-- ✅ `Dockerfile` — Extension image stub (labels set, stages TODO)
-- ✅ `Makefile` — Build/install/push targets
-- ✅ `docker.svg` — Placeholder icon
+### Scaffold (pre-development)
+
+- ✅ `CLAUDE.md`, `HANDOFF.md`, `README.md`, `CONTRIBUTING.md`
+- ✅ `CHANGELOG.md`, `LICENSE` (MIT), `VERSION` (0.1.0)
+- ✅ `.gitignore`, `.editorconfig`, `metadata.json`
 - ✅ `docs/FEASIBILITY.md` — Full feasibility assessment
+- ✅ `docker.svg` — Placeholder icon
+
+### Phase 1 MVP (completed)
+
+- ✅ `.github/workflows/ci.yml` — 7-job CI pipeline (go-lint, go-build, go-test, fe-lint, fe-typecheck, fe-test, docker-build)
+- ✅ `backend/` — Go backend with 15 source files across 6 packages
+  - `internal/store/` — SQLite data model with image check tracking
+  - `internal/imageref/` — Image reference parser (Docker Hub, GHCR, private registries)
+  - `internal/registry/` — Docker Hub v2 client (token auth, manifest HEAD, digest extraction)
+  - `internal/docker/` — Docker Engine API wrapper (container list, image inspect)
+  - `internal/checker/` — Orchestrator tying store, registry, and Docker client together
+  - `internal/api/` — HTTP handlers (GET /api/checks, POST /api/check-all, GET /api/status)
+  - `main.go` — Server entry point with Unix socket listener and graceful shutdown
+- ✅ `ui/` — React 18 + MUI v5 + Vite 7 + TypeScript frontend
+  - Components: ContainerTable, StatusChip, ErrorBoundary
+  - Hook: useBackend (real ddClient API calls)
+  - Tests: 5 unit tests with vitest + testing-library
+- ✅ `Dockerfile` — Multi-stage build (Go 1.24-alpine → Node 22-alpine → Alpine 3.19)
+- ✅ `Makefile` — Full targets including validate, go-test, go-lint, fe-test, fe-typecheck, fe-lint
 
 ---
 
 ## What Still Needs To Be Done
 
-### 1. GitHub Repository (FIRST PRIORITY)
+### Phase 1 (complete)
 
-```powershell
-cd /d D:\devspace\DockPulse
-cmd /c "gh repo create HerbHall/DockPulse --public --source=. --remote=origin --description "Docker Desktop extension — check if your container images have updates available""
-git add -A
-git commit -m "chore: initial project scaffold"
-git push -u origin main
-```
+- ✅ GitHub repo created, issues filed (#1-#10)
+- ✅ #1 Data model — SQLite store (PR #12)
+- ✅ #2 React UI — container list with status (PR #14, #16)
+- ✅ #3 Backend service — registry client + checker + API (PR #15)
+- ✅ #4 Image ref parsing — Docker Hub, GHCR, private registry formats (PR #13)
+- ✅ #5 Docker Hub auth — anonymous token auth for manifest HEAD (PR #15)
+- ✅ #10 Dockerfile + branding (PR #17)
 
-### 2. Create GitHub Issues
+### Phase 2+ (open issues)
 
-Suggested issue backlog (create with `gh issue create`):
-
-1. **Data model: registry check results** (mvp) — Define schema for storing check results, timestamps, digest comparisons
-2. **React UI: container list with update status** (mvp) — Container table showing image, current digest, latest digest, status badge (up-to-date/update-available/unknown)
-3. **Backend service: registry API client** (mvp) — Query Docker Hub v2 API for manifest digests, compare against running container image IDs
-4. **Docker Hub authentication and rate limiting** (mvp) — Handle anonymous rate limits (100 pulls/6hrs), optional token auth for higher limits
-5. **GHCR and private registry support** (enhancement) — Extend registry client beyond Docker Hub to GitHub Container Registry, self-hosted registries
-6. **Scheduled background checks** (enhancement) — Periodic update checking with configurable interval
-7. **Notification system** (enhancement) — Badge/alert when updates found, optional desktop notifications
-8. **Update history log** (enhancement) — Track when updates were detected, when containers were updated
-9. **One-click update action** (enhancement) — Pull new image + recreate container (with safety confirmation)
-10. **Docker Hub publishing** (chore) — Multi-arch build, marketplace listing, screenshots
-
-### 3. Source Directories (Create When Development Begins)
-
-```text
-ui/           — React frontend (create when starting issue #2)
-backend/      — Go or Node backend service (create when starting issue #3)
-```
+- #6 Scheduled background checks with configurable intervals
+- #7 Scan history and update timeline
+- #8 Multi-registry support (GHCR, Quay, private)
+- #9 Docker Hub publishing and marketplace submission
 
 ---
 
@@ -107,10 +103,9 @@ These are settled from the research phase:
 
 ---
 
-## Suggested First Session Plan
+## Suggested Next Session Plan
 
-1. Create GitHub repo + push scaffold
-2. Create labels + issues
-3. Begin MVP: registry API client (issue #3) — this is the core technical challenge
-4. Build UI showing container update status (issue #2)
-5. Wire frontend to backend (issue #1)
+1. Install the extension locally and test with real containers (`make build-extension && make install-extension`)
+2. Take screenshots for marketplace submission (issue #9)
+3. Implement scheduled scans (issue #6) — add settings UI + backend timer
+4. Add GHCR support (issue #8) — extend Registry interface with a GHCR client
