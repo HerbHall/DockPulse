@@ -1,24 +1,42 @@
-import { useState, useCallback } from "react";
-import type { ImageCheck } from "../types";
+import { createDockerDesktopClient } from "@docker/extension-api-client";
+import { useState, useCallback, useEffect } from "react";
+import type { ImageCheck, CheckAllResponse } from "../types";
 
-// TODO: Replace with real ddClient.extension.vm.service calls in Wave 3
+const ddClient = createDockerDesktopClient();
+
 export function useBackend() {
+  const [checks, setChecks] = useState<ImageCheck[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const getChecks = useCallback(async (): Promise<ImageCheck[]> => {
-    // Placeholder -- will call ddClient.extension.vm.service.get("/api/checks")
-    return [];
+  const fetchChecks = useCallback(async () => {
+    try {
+      const result = await ddClient.extension.vm?.service?.get("/api/checks");
+      const data = result as { checks: ImageCheck[] };
+      setChecks(data.checks ?? []);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to fetch checks");
+    }
   }, []);
 
-  const checkAll = useCallback(async (): Promise<ImageCheck[]> => {
+  const checkAll = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
-      // Placeholder -- will call ddClient.extension.vm.service.post("/api/check-all")
-      return [];
+      const result = await ddClient.extension.vm?.service?.post("/api/check-all", {});
+      const data = result as CheckAllResponse;
+      setChecks(data.checks ?? []);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Check failed");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  return { getChecks, checkAll, loading };
+  useEffect(() => {
+    fetchChecks();
+  }, [fetchChecks]);
+
+  return { checks, checkAll, loading, error, fetchChecks };
 }
