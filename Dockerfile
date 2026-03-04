@@ -3,6 +3,8 @@
 # DockPulse Docker Desktop Extension
 # Multi-stage build: Go backend + React frontend
 
+ARG VERSION=0.1.0 # x-release-please-version
+
 # ---------- Stage 1: Build Go backend ----------
 FROM golang:1.24-alpine AS backend-build
 WORKDIR /build
