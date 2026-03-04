@@ -55,6 +55,13 @@ fe-lint:
 fe-typecheck:
 	cd ui && npx tsc --noEmit
 
+# Git hooks
+.PHONY: hooks
+hooks:
+	cp scripts/pre-push .git/hooks/pre-push
+	chmod +x .git/hooks/pre-push
+	@echo "pre-push hook installed"
+
 # All checks
 .PHONY: validate
 validate: go-build go-test go-lint fe-typecheck fe-lint fe-test
