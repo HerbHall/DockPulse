@@ -1,0 +1,7 @@
+name: dockpulse
+forge: github
+forge_url: https://github.com/HerbHall/DockPulse
+phase: execution
+registered: 2026-02-20
+labels_synced: true
+autonomy_overrides: {}
