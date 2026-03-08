@@ -1,5 +1,5 @@
 ---
-phase: phase-1-complete
+phase: execution
 updated: 2026-03-08T01:00:00Z
 updated_by: claude-code
 ---
@@ -36,6 +36,6 @@ Copilot integration files added. Phase 1 MVP complete with all core features.
 ## Start Here (Cold Start Protocol)
 
 1. Read this file
-2. Samverk MCP not yet configured for this project -- skip step 2
+2. Call `samverk get_digest --since 168h` if MCP is configured
 3. Read open issues if relevant to the task
 4. Proceed -- do not ask the user to explain project state
