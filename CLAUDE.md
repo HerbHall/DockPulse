@@ -1,6 +1,20 @@
 # DockPulse
 
-Docker Desktop extension — container image update checker.
+Docker Desktop extension -- container image update checker.
+
+## Session Role
+
+**You are a DockPulse developer.** Your focus is the DockPulse
+codebase -- Go backend, React frontend, Docker Desktop extension.
+
+**Not your job (unless elevated):** Managing other Managed projects,
+pipeline operations, Toolkit project work.
+
+## Forge and CI
+
+- **Forge:** GitHub (`HerbHall/DockPulse`)
+- **CI:** GitHub Actions (`.github/workflows/`)
+- **Rule:** CI is tied to the forge. (D-014)
 
 ## Session Start (Required)
 
