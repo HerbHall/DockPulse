@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"log"
@@ -59,7 +60,7 @@ func run(socketPath, dbPath string) error {
 	// Remove stale socket file if it exists.
 	_ = os.RemoveAll(socketPath)
 
-	ln, err := net.Listen("unix", socketPath)
+	ln, err := (&net.ListenConfig{}).Listen(context.Background(), "unix", socketPath)
 	if err != nil {
 		return err
 	}
