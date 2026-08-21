@@ -158,7 +158,7 @@ func TestGetChecks_AfterCheckAll(t *testing.T) {
 func TestStatus(t *testing.T) {
 	_, mux := setupHandler(t)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/status", http.NoBody)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/status", http.NoBody)
 	rec := httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 
