@@ -74,7 +74,7 @@ func setupHandler(t *testing.T) (*Handler, *http.ServeMux) {
 func TestGetChecks_Empty(t *testing.T) {
 	_, mux := setupHandler(t)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/checks", http.NoBody)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/checks", http.NoBody)
 	rec := httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 
@@ -99,7 +99,7 @@ func TestGetChecks_Empty(t *testing.T) {
 func TestCheckAll(t *testing.T) {
 	_, mux := setupHandler(t)
 
-	req := httptest.NewRequest(http.MethodPost, "/api/check-all", http.NoBody)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/check-all", http.NoBody)
 	rec := httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 
@@ -127,7 +127,7 @@ func TestGetChecks_AfterCheckAll(t *testing.T) {
 	_, mux := setupHandler(t)
 
 	// Trigger a check first.
-	req := httptest.NewRequest(http.MethodPost, "/api/check-all", http.NoBody)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodPost, "/api/check-all", http.NoBody)
 	rec := httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 	if rec.Code != http.StatusOK {
@@ -135,7 +135,7 @@ func TestGetChecks_AfterCheckAll(t *testing.T) {
 	}
 
 	// Now GET /api/checks should return the persisted results.
-	req = httptest.NewRequest(http.MethodGet, "/api/checks", http.NoBody)
+	req = httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/checks", http.NoBody)
 	rec = httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 
@@ -158,7 +158,7 @@ func TestGetChecks_AfterCheckAll(t *testing.T) {
 func TestStatus(t *testing.T) {
 	_, mux := setupHandler(t)
 
-	req := httptest.NewRequest(http.MethodGet, "/api/status", http.NoBody)
+	req := httptest.NewRequestWithContext(context.Background(), http.MethodGet, "/api/status", http.NoBody)
 	rec := httptest.NewRecorder()
 	mux.ServeHTTP(rec, req)
 

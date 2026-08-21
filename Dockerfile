@@ -6,7 +6,7 @@
 ARG VERSION=0.1.0 # x-release-please-version
 
 # ---------- Stage 1: Build Go backend ----------
-FROM golang:1.24-alpine AS backend-build
+FROM golang:1.25-alpine AS backend-build
 WORKDIR /build
 
 COPY backend/go.mod backend/go.sum ./
